@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <style>
+      div {
+        border: 1px solid black;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="user-1"></div>
+    </div>
+
+    <script>
+      //비동기 함수 download()
+      async function download() {
+        let res = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+        const contentType = res.headers.get("content-type");
+        console.log(contentType);
+
+        //json object 구조를 가지는 resBody 객체
+        let resBody = await res.json();
+        console.log(resBody);
+
+        let dom = document.querySelector("#user-1");
+
+        // 1. innerHTML
+        dom.innerHTML = `
+            <div>
+                <div>userId : ${resBody.userId} </div>
+                <div>title : ${resBody.title}</div>
+                <div>title : ${resBody.body}</div>
+            </div>
+        `;
+
+        // 2. createElement
+        dom.append(render(resBody));
+        dom.append(render(resBody));
+        //나중에 집어넣은 것을 가장 상단에 두고 싶을 때
+        dom.prepend(render(resBody));
+      }
+
+      function render(resBody) {
+        let newDom = document.createElement("div");
+        console.log(newDom);
+
+        newDom.innerHTML = `
+            <div>
+                <div>userId : ${resBody.userId} </div>
+                <div>title : ${resBody.title}</div>
+                <div>title : ${resBody.body}</div>
+            </div>
+        `;
+        return newDom;
+      }
+
+      download();
+    </script>
+  </body>
+</html>
